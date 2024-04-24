@@ -330,8 +330,8 @@ int main(void)
  
 int main(void)
 {
-    unsigned char flags = 8;  //двоичная запись 00001000
-    unsigned char mask = 5;   //двоичная запись 00000101
+    unsigned char flags = 8;    //двоичная запись 00001000
+    unsigned char mask = 5;     //двоичная запись 00000101
  
     flags = flags | mask;       //двоичная запись 00001101 (число 13)
  
@@ -347,14 +347,14 @@ int main(void)
  
 int main(void)
 {
-    unsigned char flags = 9;  //двоичная запись 00001001
-    unsigned char mask = 1;   //двоичная запись 00000001
+    unsigned char flags = 9;    //двоичная запись 00001001
+    unsigned char mask = 1;     //двоичная запись 00000001
  
-    flags = flags ^ mask;      //двоичная запись 00001000 (число 8)
+    flags = flags ^ mask;       //двоичная запись 00001000 (число 8)
  
     printf("flags = %d\n", flags);
  
-    flags ^= mask;     //двоичная запись 00001001 (число 9)
+    flags ^= mask;              //двоичная запись 00001001 (число 9)
     printf("flags = %d\n", flags);
  
     return 0;
@@ -398,6 +398,70 @@ int main(void)
     return 0;
 }
 ```
+
+## Генерация псевдослучайных чисел
+- Числа, генерируемые функцией rand(), распределены по равномерному закону (равновероятны)
+- Функция rand() выдает числа в диапазоне [0; RAND_MAX]
+### Каждый раз будет один и тот же результат
+```c
+
+#include <stdio.h>
+#include <stdlib.h> // библиотека с rand()
+
+int main(void)
+{
+    printf("%d, %d, %d\n", rand(), rand(), rand());
+    return 0;
+}
+```
+### Разные числа
+```c
+
+#include <stdio.h>
+#include <stdlib.h> // библиотека с rand()
+#include <time.h>   // библиотека с time()
+
+int main(void)
+{
+    srand(time(NULL));
+    printf("%d, %d, %d\n", rand(), rand(), rand());
+    return 0;
+}
+```
+### Задание диапазона
+```c
+int r_1 = rand() % range;       // [0, range)
+int r_1 = rand() % range - 5;   // [5, range - 5)
+int r_3 = rand() + rand();      // больше RAND_MAX >= 32767
+int r_4 = rand() % (b - a + 1) + a; // [a, b] при (a < b)
+double range_float = (double)rand() / (double)RAND_MAX; // [0, 1]
+double range_map = (double)rand() / RAND_MAX * (b - a) + a  // [0, RAND_MAX] -> [a, b]
+```
+
+## <math.h> Основные функции
+> Note: Надо следить за типом передаваемых значений.
+
+|Функция| Описание|
+| - |:-------------:|
+|int abs(int) |	Вычисление модуля целочисленного значения|
+|double fabs(double) |	Вычисление модуля вещественного значения|
+|double round(double) |	Округление вещественного значения до ближайшего целого|
+|double floor(double) |	Округление вещественного значения до наименьшего целого|
+|double ceil(double) | Округление вещественного значения до наибольшего целого|
+|double trunc(double)| Отбрасывание дробной части вещественного числа|
+|double sqrt(double) | Вычисление квадратного корня от вещественного значения|
+|double cbrt(double) | Вычисление кубического корня от вещественного значения|
+|double pow(double x, double y)| |
+|double exp(double) | Вычисление экспоненты от вещественного значения|
+|double log(double) | Вычисление натурального логарифма.|
+|double log2(double) | Вычисление логарифма по основанию 2|
+|double log10(double) |	Вычисление десятичного логарифма|
+|double sin(double) |	Вычисление синуса угла, заданного в радианах|
+|double cos(double) |	Вычисление косинуса угла, заданного в радианах|
+|double tan(double) |	Вычисление тангенса угла, заданного в радианах|
+|double asin(double) |	Вычисление арксинуса угла (возвращает радианы)|
+|double acos(double) |	Вычисление арккосинуса угла (возвращает радианы)|
+|double atan(double) |	Вычисление арктангенса угла (возвращает радианы)|
 
 # todo
 
