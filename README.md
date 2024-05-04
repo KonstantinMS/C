@@ -574,6 +574,50 @@ int main(){
     return 0;
 }
 ```
+Пример: палиндром
+```
+#include <stdio.h>
+int isPalindrome(int num) {
+    int reversedNum = 0;
+    int originalNum = num;
+    while (num > 0) {
+        int digit = num % 10;
+        reversedNum = reversedNum * 10 + digit;
+        num /= 10;
+    }
+    return originalNum == reversedNum;
+}
+
+int main() {
+    int number;
+    scanf("%d", &number);
+    
+    if (isPalindrome(number))
+        printf("yes");
+    else
+        printf("no");
+    return 0;
+}
+```
+Пример: наибольший общий делитель (НОД) двух натуральных чисел
+```c
+#include <stdio.h>
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+int main() {
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    int result = gcd(num1, num2);
+    printf("%d", result);
+    return 0;
+}
+```
 # todo
 
 - написать прогу для вывода места, занимаемого всеми типами данных
