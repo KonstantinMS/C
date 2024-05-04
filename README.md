@@ -523,7 +523,57 @@ const int max_size = 5;
 #if !defined(SIZE) ... #endif    // OK
 #if(SIZE == 1) ... #endif    // OK
 ```
-
+## Циклы
+### while
+Цикл с предусловием
+- выполнение операций слева направо
+```c
+int i = 0;
+while (++i <= n && i <=10)  // сначала делается все до && (||)
+```
+Пример: Читаем числа, пока не встретим 0 или не целое число или буквы. Причем 1.25 воспримет как 1.
+```c
+#include <stdio.h>
+ int main(void)
+{
+    int s = 0, x ;
+    while(scanf("%d", &x) == 1 && x != 0)
+        printf("%d ", x * x);
+    return 0;
+}
+```
+Пример: найти сумму квадратов n чисел
+```c
+#include <stdio.h>
+int main(void)
+{
+    int n, s = 0;
+    if(scanf("%d", &n) != 1) {
+        printf("Error input\n");
+        return 0;
+    }
+    while(n > 0) {
+        s += n*n;
+        n--;
+    }
+    printf("s = %d\n", s);
+    return 0;
+}
+```
+Пример: последовательность Фибоначчи 
+```c
+#include <stdio.h> 
+int Fib(int i){
+    if(i <= 1) return i;
+    return Fib(i-1) + Fib(i - 2);
+}
+int main(){
+    int n, i = 0;
+    scanf("%d", &n);
+    while(i++ < n) printf("%d ", Fib(i));
+    return 0;
+}
+```
 # todo
 
 - написать прогу для вывода места, занимаемого всеми типами данных
