@@ -464,9 +464,11 @@ double range_map = (double)rand() / RAND_MAX * (b - a) + a  // [0, RAND_MAX] -> 
 |double atan(double) |	Вычисление арктангенса угла (возвращает радианы)|
 
 ## Макросы 
+- действие макроопределений распространяется только на текущий модуль
 - имена макросов принято записывать заглавными буквами
 - макроимена не подставляются внутри строк 
 - макроопределения обрабатываются до непосредственной компиляции программы
+- препроцессор на место записи директивы #include вставляет содержимое указанного файла
 ```c
 #define  10
 printf("DIGIT"); // DIGIT
@@ -475,6 +477,51 @@ printf("DIGIT"); // DIGIT
 ```c
 #undef DIGIT
 #define DIGIT 5
+```
+- Переменные нужно брать в скобки
+```c
+#include <stdio.h>
+#define MUL(X, Y)     ((X) * (Y))
+int main(void){
+    int a = 2, b = 5;
+    int res_mul = MUL(a + 2, b - 1);
+    printf("%d", res_mul);
+    return 0;
+}
+```
+- операция ## служит для склейки двух лексем в одну
+```c
+#define RES_N(RES)     res_ ## RES
+RES_N(1) // res_1
+```
+Пример: ограничения максимального значения
+```c
+#define MAX_WIDTH       1280
+#define GET_WIDTH(W)    (W) < MAX_WIDTH ? (W) : MAX_WIDTH
+```
+Пример: поиск максимума
+```c
+#define GET_MAX(X, Y) (X > Y ? X : Y)
+#define GET_MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+// Оба ок для GET_MAX(val_1 + 1, val_2 - 1)
+```
+Тонкости использования
+```c
+const int max_size = 5;
+#define SIZE    1
+#define IS_CPP
+
+#if defined(SIZE) ... #endif    // OK
+#ifdef IS_CPP ... #endif    // OK
+#if SIZE >= 0 && SIZE <= 10 ... #endif    // OK
+#ifndef IS_CPP ... #endif    // OK
+#if SIZE > 10 - 8 ... #endif    // OK
+#if SIZE > 0 ... #endif    // OK
+#ifdef(IS_CPP) ... #endif     // CE, скобки macro names must be identifiers
+#if IS_CPP ... #endif   // CE, нет значения #if with no expression
+#if max_size > 1 ... #endif // не корректно работает, зайдет в условие только если !max_size
+#if !defined(SIZE) ... #endif    // OK
+#if(SIZE == 1) ... #endif    // OK
 ```
 
 # todo
